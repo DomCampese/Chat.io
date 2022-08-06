@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+{% block title %} Lobby {% endblock %}
+
+{% block nav %} 
+    <a href="{{ url_for('create_chatroom') }}">Create a Chat Room</a>
+{% endblock %}
+
+{% block body %}
+    <h1>Lobby</h1>
+    <div class="chatroom-list">
+        {% if not chatrooms %}
+            <p>No chatrooms yet.</p>
+        {% endif %}
+
+        {% for chatroom in chatrooms %}
+            <div class="chatroom-list">
+                <div class>
+                    <div class="chatroom-link">
+                        <a href="{{ url_for('chatroom', chatroom_id=chatroom.chatroom_id) }}">{{ chatroom.name }}</a>
+                        {% if chatroom in g.user.owned_chatrooms %}
+                            <form method="post" action="{{ url_for('delete_chatroom', chatroom_id=chatroom.chatroom_id) }}"">
+                                <input type="submit" value="Delete" />
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
